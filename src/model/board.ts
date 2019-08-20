@@ -1,15 +1,15 @@
-export type BoardInfo = CellType[][];
+export enum CellInfo {Empty, MachineMark, PlayerMark};
 
-export enum CellType {Empty, MachineMark, HumanMark};
+export type BoardInfo = CellInfo[][];
 
-export const createNewBoard = (): CellType[][] => {
+export const createNewBoard = (): CellInfo[][] => {
     const numberColums = 3, numberRows = 3;
-    const newBoard: CellType[][] = [];
+    const newBoard: CellInfo[][] = [];
     let row = [];
     for (let i = 0; i < numberRows; i++) {
         row = [];
         for (let j = 0; j < numberColums; j++) {
-            row.push(CellType.Empty);
+            row.push(CellInfo.Empty);
         }
         newBoard.push(row);
     }

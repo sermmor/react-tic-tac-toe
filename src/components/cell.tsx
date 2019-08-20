@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CellType } from '../model/board';
+import { CellInfo } from '../model/board';
 import { GameStatus } from './game';
 
 const genericCellStyle: React.CSSProperties = {
@@ -25,14 +25,14 @@ const styleCellMachineMark: React.CSSProperties = {
 
 interface Props {
   gameStatus: GameStatus;
-  cellType: CellType;
+  cellType: CellInfo;
   isInPlayerTurn: boolean;
   onChangeCell: () => void;
 }
 
-const buildCellStyle = (cellType: CellType): React.CSSProperties => {
-  const styleCell = cellType === CellType.HumanMark ? styleCellHumanMark : (
-    cellType == CellType.MachineMark ? styleCellMachineMark : styleCellCleaned
+const buildCellStyle = (cellType: CellInfo): React.CSSProperties => {
+  const styleCell = cellType === CellInfo.PlayerMark ? styleCellHumanMark : (
+    cellType == CellInfo.MachineMark ? styleCellMachineMark : styleCellCleaned
   );
   return {
     ...genericCellStyle,
@@ -49,14 +49,14 @@ export const Cell = (props: Props) => {
       // Player turn.
       props.onChangeCell();
       setCellText('O')
-      setCellStyle(buildCellStyle(CellType.HumanMark));
+      setCellStyle(buildCellStyle(CellInfo.PlayerMark));
     }
   }, []);
 
-  if (props.cellType === CellType.MachineMark && cellText !== 'X') {
+  if (props.cellType === CellInfo.MachineMark && cellText !== 'X') {
     // Machine turn.
     setCellText('X');
-    setCellStyle(buildCellStyle(CellType.MachineMark));
+    setCellStyle(buildCellStyle(CellInfo.MachineMark));
   }
 
   return (

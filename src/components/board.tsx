@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CellType as CellInfo, BoardInfo } from '../model/board';
+import { CellInfo, BoardInfo } from '../model/board';
 import { GameStatus } from './game';
 import { Cell } from './cell';
 import { IAMovement } from '../model/ia';
@@ -47,7 +47,7 @@ const turnManager = (props: Props): ((i: number, j: number) => void) => {
     const [isInMachineMovement, setIsInMachineMovement] = React.useState(false);
     const markCellAsHuman = React.useCallback((i: number, j: number) => {
         if (props.gameStatus.isInPlayerTurn && props.gameStatus.boardState[i][j] === CellInfo.Empty) {
-            props.gameStatus.boardState[i][j] = CellInfo.HumanMark;
+            props.gameStatus.boardState[i][j] = CellInfo.PlayerMark;
             props.onTurnChange(props.gameStatus.boardState, false);
             setIsInMachineMovement(true);
         }

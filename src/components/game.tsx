@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Board } from './board';
 import { getNextMachineTurn, IAMovement } from '../model/ia';
-import { createNewBoard, CellType, BoardInfo } from '../model/board';
+import { createNewBoard, CellInfo, BoardInfo } from '../model/board';
 
 export interface GameStatus {
     isInPlayerTurn: boolean;
@@ -21,12 +21,12 @@ const useGameStatus = (): GameStatus => {
     return { boardState, isInPlayerTurn, setGameStatus, };
 };
 
-const turnManagement = (isInPlayerTurn: boolean): IAMovement => {
+const turnManagement = (gameStatus: GameStatus): IAMovement => {
 
     let nextIAMovement: IAMovement = undefined;
 
-    if (!isInPlayerTurn) {
-        nextIAMovement = getNextMachineTurn();
+    if (!gameStatus.isInPlayerTurn) {
+        nextIAMovement = getNextMachineTurn(gameStatus.boardState);
     }
 
     return nextIAMovement;
@@ -34,7 +34,7 @@ const turnManagement = (isInPlayerTurn: boolean): IAMovement => {
 
 export const Game = () => {
     const gameStatus = useGameStatus();
-    const nextIAMovement = turnManagement(gameStatus.isInPlayerTurn);
+    const nextIAMovement = turnManagement(gameStatus);
 
     return (
         <>
