@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { createNewBoard, CellType } from '../model/board';
-import { GameStatus, Turn } from './game';
+import { CellType as CellInfo, BoardInfo } from '../model/board';
+import { GameStatus } from './game';
 import { Cell } from './cell';
+import { IAMovement } from '../model/ia';
 
 type OnChangeCellCalback = (i: number, j: number) => void;
 
@@ -18,10 +19,12 @@ const boardStyle: React.CSSProperties = {
 
 interface Props {
     gameStatus: GameStatus;
+    nextIAMovement: IAMovement;
+    onTurnChange: (nextBoardState: BoardInfo, newIsInPlayerTurn: boolean) => void;
 }
 
 interface CellStatus {
-    cell: CellType; 
+    cell: CellInfo; 
     i: number; 
     j: number;
 }
@@ -33,29 +36,40 @@ const renderCell = (status: CellStatus, gameStatus: GameStatus, onChangeCell: On
         <Cell
             key={`cell_${status.i}_${status.j}`}
             cellType={status.cell}
-            isPlayingMachine={gameStatus.currentTurn === Turn.Machine}
+            isInPlayerTurn={gameStatus.isInPlayerTurn}
             onChangeCell={onChangeEmptyCell}
+            gameStatus={gameStatus}
         />
     );
 }
 
-export const Board = (props: Props) => {
-    const [boardState, setBoardState] = React.useState(createNewBoard());
-    
+const turnManager = (props: Props): ((i: number, j: number) => void) => {
+    const [isInMachineMovement, setIsInMachineMovement] = React.useState(false);
     const markCellAsHuman = React.useCallback((i: number, j: number) => {
-        if (boardState[i][j] === CellType.Empty) {
-            boardState[i][j] = CellType.HumanMark;
-            setBoardState(boardState);
+        if (props.gameStatus.isInPlayerTurn && props.gameStatus.boardState[i][j] === CellInfo.Empty) {
+            props.gameStatus.boardState[i][j] = CellInfo.HumanMark;
+            props.onTurnChange(props.gameStatus.boardState, false);
+            setIsInMachineMovement(true);
         }
     }, []);
-    
-    // TODO: USE setGameStatus FOR currentTurn: Turn TO MACHINE TURN
-    // TODO: USE setBoardState FOR currentTurn: Turn TO MACHINE TURN
+
+    if (!props.gameStatus.isInPlayerTurn && isInMachineMovement) {
+        setTimeout(() => {
+            props.gameStatus.boardState[props.nextIAMovement.i][props.nextIAMovement.j] = CellInfo.MachineMark;
+            props.onTurnChange(props.gameStatus.boardState, true);
+        }, 200);
+        setIsInMachineMovement(false);
+    }
+    return markCellAsHuman;
+}
+
+export const Board = (props: Props) => {
+    const markCellAsHuman = turnManager(props);
 
     return (
         <div style={boardStyle}>
             {
-                boardState.map((row, i) =>
+                props.gameStatus.boardState.map((row, i) =>
                     row.map((cell, j) => 
                         renderCell({cell, i, j}, props.gameStatus, markCellAsHuman)
                     )

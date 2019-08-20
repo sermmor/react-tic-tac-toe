@@ -1,3 +1,4 @@
+export type BoardInfo = CellType[][];
 
 export enum CellType {Empty, MachineMark, HumanMark};
 

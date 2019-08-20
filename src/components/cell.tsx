@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { CellType } from '../model/board';
+import { GameStatus } from './game';
 
 const genericCellStyle: React.CSSProperties = {
   width: 100,
@@ -23,8 +24,9 @@ const styleCellMachineMark: React.CSSProperties = {
 };
 
 interface Props {
+  gameStatus: GameStatus;
   cellType: CellType;
-  isPlayingMachine: boolean;
+  isInPlayerTurn: boolean;
   onChangeCell: () => void;
 }
 
@@ -43,15 +45,19 @@ export const Cell = (props: Props) => {
   const [cellStyle, setCellStyle] = React.useState(buildCellStyle(props.cellType))
 
   const onChangeCell = React.useCallback(() => {
-    if (!props.isPlayingMachine) {
+    if (props.isInPlayerTurn) {
+      // Player turn.
       props.onChangeCell();
       setCellText('O')
       setCellStyle(buildCellStyle(CellType.HumanMark));
     }
   }, []);
 
-  // TODO: Review 'X' machine turn.
-  // const style = buildCellStyle(props.genericCellStyle, props.cellType);
+  if (props.cellType === CellType.MachineMark && cellText !== 'X') {
+    // Machine turn.
+    setCellText('X');
+    setCellStyle(buildCellStyle(CellType.MachineMark));
+  }
 
   return (
     <div style={cellStyle} onClick={onChangeCell}>{cellText}</div>
