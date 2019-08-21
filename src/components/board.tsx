@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { CellInfo, BoardInfo } from '../model/board';
+import { CellInfo, BoardInfo, getGameResult } from '../model/board';
 import { GameStatus } from './game';
 import { Cell } from './cell';
-import { IAMovement } from '../model/ia';
+import { CellPosition } from '../model/ia';
 
 type OnChangeCellCalback = (i: number, j: number) => void;
 
@@ -19,7 +19,7 @@ const boardStyle: React.CSSProperties = {
 
 interface Props {
     gameStatus: GameStatus;
-    nextIAMovement: IAMovement;
+    nextIAMovement: CellPosition;
     onTurnChange: (nextBoardState: BoardInfo, newIsInPlayerTurn: boolean) => void;
 }
 

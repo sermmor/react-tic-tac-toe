@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Board } from './board';
-import { getNextMachineTurn, IAMovement } from '../model/ia';
-import { createNewBoard, CellInfo, BoardInfo } from '../model/board';
+import { getNextMachineTurn, CellPosition } from '../model/ia';
+import { createNewBoard, CellInfo, BoardInfo, getGameResult } from '../model/board';
 
 export interface GameStatus {
     isInPlayerTurn: boolean;
@@ -21,9 +21,9 @@ const useGameStatus = (): GameStatus => {
     return { boardState, isInPlayerTurn, setGameStatus, };
 };
 
-const turnManagement = (gameStatus: GameStatus): IAMovement => {
+const turnManagement = (gameStatus: GameStatus): CellPosition => {
 
-    let nextIAMovement: IAMovement = undefined;
+    let nextIAMovement: CellPosition = undefined;
 
     if (!gameStatus.isInPlayerTurn) {
         nextIAMovement = getNextMachineTurn(gameStatus.boardState);
@@ -35,6 +35,9 @@ const turnManagement = (gameStatus: GameStatus): IAMovement => {
 export const Game = () => {
     const gameStatus = useGameStatus();
     const nextIAMovement = turnManagement(gameStatus);
+
+    // TODO: Send callbacks for game finished and show result in modal https://material-ui.com/es/components/dialogs/
+    console.log(`Game Result: ${getGameResult(gameStatus.boardState)}`);
 
     return (
         <>
