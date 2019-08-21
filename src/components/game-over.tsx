@@ -16,7 +16,7 @@ interface Props {
 export const GameOverDialog = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState('Game Over');
-  const [infoDialog, setInfoDialog] = React.useState('Machine wins');
+  const [infoDialog, setInfoDialog] = React.useState('You lose');
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
