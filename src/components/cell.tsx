@@ -2,9 +2,16 @@ import * as React from 'react';
 import { CellInfo } from '../model/board';
 import { GameStatus } from './game';
 
-const genericCellStyle: React.CSSProperties = {
+const imageXPath = 'images/X-300.png';
+const imageOPath = 'images/O-300.png';
+
+const cellSize: React.CSSProperties = {
   width: 100,
   height: 100,
+}
+
+const genericCellStyle: React.CSSProperties = {
+  ...cellSize,
   border: "10px solid #383838",
   textAlign: "center",
   fontSize: "5.5em",
@@ -42,25 +49,27 @@ const buildCellStyle = (cellType: CellInfo): React.CSSProperties => {
 }
 
 export const Cell = (props: Props) => {
-  const [cellText, setCellText] = React.useState('');
+  const [cellImagePath, setCellImagePath] = React.useState('');
   const [cellStyle, setCellStyle] = React.useState(buildCellStyle(props.cellType))
 
   const onChangeCell = React.useCallback(() => {
     if (props.isInPlayerTurn) {
       // Player turn.
       props.onChangeCell();
-      setCellText('O')
+      setCellImagePath(imageOPath)
       setCellStyle(buildCellStyle(CellInfo.PlayerMark));
     }
   }, []);
 
-  if (props.cellType === CellInfo.MachineMark && cellText !== 'X') {
+  if (props.cellType === CellInfo.MachineMark && cellImagePath !== imageXPath) {
     // Machine turn.
-    setCellText('X');
+    setCellImagePath(imageXPath);
     setCellStyle(buildCellStyle(CellInfo.MachineMark));
   }
 
   return (
-    <div style={cellStyle} onClick={onChangeCell}>{cellText}</div>
+    <div style={cellStyle} onClick={onChangeCell}>
+      <img src={cellImagePath} style={cellSize}/>
+    </div>
   );
 }
