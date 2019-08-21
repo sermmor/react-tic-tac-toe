@@ -54,7 +54,7 @@ const turnManager = (props: Props): ((i: number, j: number) => void) => {
         }
     }, []);
 
-    if (!props.gameStatus.isInPlayerTurn && isInMachineMovement) {
+    if (!props.gameStatus.isInPlayerTurn && isInMachineMovement && props.nextIAMovement) {
         // Waiting 200 milliseconds for more jugability.
         setTimeout(() => {
             props.gameStatus.boardState[props.nextIAMovement.i][props.nextIAMovement.j] = CellInfo.MachineMark;

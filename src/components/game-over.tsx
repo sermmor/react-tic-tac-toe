@@ -29,7 +29,6 @@ export const GameOverDialog = (props: Props) => {
     }
   }
 
-
   const handleClose = React.useCallback(() => {
     setOpen(false);
     location.reload();
