@@ -35,8 +35,8 @@ const turnManagement = (gameStatus: GameStatus): CellPosition => {
 export const Game = () => {
     const gameStatus = useGameStatus();
     const nextIAMovement = turnManagement(gameStatus);
-
-    // TODO: Send callbacks for game finished and show result in modal https://material-ui.com/es/components/dialogs/
+    
+    // TODO: Send callbacks for game finished (changing Board) and show result in modal https://material-ui.com/es/components/dialogs/
     console.log(`Game Result: ${getGameResult(gameStatus.boardState)}`);
 
     return (

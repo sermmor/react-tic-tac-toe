@@ -5,22 +5,23 @@ import { GameStatus } from './game';
 const genericCellStyle: React.CSSProperties = {
   width: 100,
   height: 100,
-  border: "10px solid white",
+  border: "10px solid #383838",
   textAlign: "center",
   fontSize: "5.5em",
+  color: "#383838",
 }
 
 const styleCellCleaned: React.CSSProperties = {
-  backgroundColor: "gray",
+  backgroundColor: "#BEBEBE",
   cursor: "pointer",
 };
 
 const styleCellHumanMark: React.CSSProperties = {
-  backgroundColor: "green",
+  backgroundColor: "#4FFF8C",
 };
 
 const styleCellMachineMark: React.CSSProperties = {
-  backgroundColor: "red",
+  backgroundColor: "#FF4F4F",
 };
 
 interface Props {

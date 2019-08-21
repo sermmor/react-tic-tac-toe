@@ -9,12 +9,13 @@ type OnChangeCellCalback = (i: number, j: number) => void;
 const boardStyle: React.CSSProperties = {
     display:"grid",
     gridTemplateColumns: "auto auto auto",
-    width: 300,
-    height: 300,
+    width: 360,
+    height: 360,
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: "translate(-60%, -50%)",
+    transform: "translate(-50%, -50%)",
+    border: "10px solid #383838",
 }
 
 interface Props {
@@ -54,6 +55,7 @@ const turnManager = (props: Props): ((i: number, j: number) => void) => {
     }, []);
 
     if (!props.gameStatus.isInPlayerTurn && isInMachineMovement) {
+        // Waiting 200 milliseconds for more jugability.
         setTimeout(() => {
             props.gameStatus.boardState[props.nextIAMovement.i][props.nextIAMovement.j] = CellInfo.MachineMark;
             props.onTurnChange(props.gameStatus.boardState, true);
