@@ -1,5 +1,5 @@
 # Tic Tac Toe
-Clasic Tic Tac Toe game made without graphic engine (no canvas and no WebGL). It made with React.js, material-ui, Typescript, ES6, CSS-Grid and Webpack.
+Classic Tic Tac Toe game made without graphic engine (no canvas and no WebGL). It made with React, Hooks, Material-UI, Typescript, ES6, CSS-Grid and Webpack.
 
 ## Controllers
 Only PC mouse controller.
