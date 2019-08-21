@@ -26,6 +26,9 @@ export const GameOverDialog = (props: Props) => {
     if (props.gameResult === GameResult.PlayerWins) {
       setTitle('VICTORY!');
       setInfoDialog('You win!');
+    } else if (props.gameResult === GameResult.Draw) {
+      setTitle('Game Over');
+      setInfoDialog('Draw');
     }
   }
 

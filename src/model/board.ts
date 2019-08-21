@@ -1,6 +1,6 @@
 import { CellPosition } from "./ia";
 
-export enum GameResult {PlayerWins, MachineWins, Running};
+export enum GameResult {PlayerWins, MachineWins, Draw, Running};
 export enum CellInfo {Empty, MachineMark, PlayerMark};
 
 export type BoardInfo = CellInfo[][];
@@ -120,6 +120,21 @@ export const canPlayerOrMachineWin = (board: BoardInfo, i: number, j: number, ty
 }
 
 export const getGameResult = (board: BoardInfo) => {
+    // Are all the cells filled?
+    let isAllCellsFilled: boolean = true;
+    for (let i = 0; i < board.length; i++) {
+        const row = board[i];
+        for (let j = 0; j < row.length; j++) {
+            if (row[j] === CellInfo.Empty) {
+                isAllCellsFilled = false;
+                break;
+            }
+        }
+    }
+    if (isAllCellsFilled) {
+        return GameResult.Draw;
+    }
+
     // Is in machine winner?
     for (let i = 0; i < board.length; i++) {
         const row = board[i];
