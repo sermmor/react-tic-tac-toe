@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Board } from './board';
 import { getNextMachineTurn, CellPosition } from '../model/ia';
-import { createNewBoard, CellInfo, BoardInfo, getGameResult } from '../model/board';
+import { createNewBoard, CellInfo, BoardInfo, getGameResult, GameResult } from '../model/board';
+import { GameOverDialog } from './game-over';
 
 export interface GameStatus {
     isInPlayerTurn: boolean;
@@ -21,11 +22,11 @@ const useGameStatus = (): GameStatus => {
     return { boardState, isInPlayerTurn, setGameStatus, };
 };
 
-const turnManagement = (gameStatus: GameStatus): CellPosition => {
+const turnManagement = (gameStatus: GameStatus, gameResult: GameResult): CellPosition => {
 
     let nextIAMovement: CellPosition = undefined;
 
-    if (!gameStatus.isInPlayerTurn) {
+    if (!gameStatus.isInPlayerTurn && gameResult === GameResult.Running) {
         nextIAMovement = getNextMachineTurn(gameStatus.boardState);
     }
 
@@ -34,14 +35,13 @@ const turnManagement = (gameStatus: GameStatus): CellPosition => {
 
 export const Game = () => {
     const gameStatus = useGameStatus();
-    const nextIAMovement = turnManagement(gameStatus);
-    
-    // TODO: Send callbacks for game finished (changing Board) and show result in modal https://material-ui.com/es/components/dialogs/
-    console.log(`Game Result: ${getGameResult(gameStatus.boardState)}`);
+    const gameResult = getGameResult(gameStatus.boardState);
+    const nextIAMovement = turnManagement(gameStatus, gameResult);
 
     return (
         <>
             <Board gameStatus={gameStatus} nextIAMovement={nextIAMovement} onTurnChange={gameStatus.setGameStatus} />
+            <GameOverDialog gameResult={gameResult}/>
         </>
     );
 }
